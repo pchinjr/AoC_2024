@@ -18,18 +18,25 @@ function cleanupMockFiles() {
       }
     } catch (err) {
       const error = err as Error;
-      console.warn(`Warning: Could not remove mock file: ${file} - ${error.message}`);
+      console.warn(
+        `Warning: Could not remove mock file: ${file} - ${error.message}`,
+      );
     }
   });
   mockFiles.length = 0;
 }
 
 Deno.test("countSafeReports - example input", async () => {
-  const input = `7 6 4 2 1\n1 2 7 8 9\n9 7 6 2 1\n1 3 2 4 5\n8 6 4 4 1\n1 3 6 7 9`;
+  const input =
+    `7 6 4 2 1\n1 2 7 8 9\n9 7 6 2 1\n1 3 2 4 5\n8 6 4 4 1\n1 3 6 7 9`;
   const mockPath = mockFile(input);
   try {
     const result = await countSafeReports(mockPath);
-    assertEquals(result, 2, "The count of safe reports should match the example.");
+    assertEquals(
+      result,
+      2,
+      "The count of safe reports should match the example.",
+    );
   } finally {
     cleanupMockFiles();
   }

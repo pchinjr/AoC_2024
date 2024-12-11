@@ -1,5 +1,5 @@
 import { assertEquals } from "jsr:@std/assert";
-import countSafeReportsWithDampener from "./02b.ts";
+import sumValidMultiplications from "./03a.ts";
 
 const mockFiles: string[] = [];
 
@@ -26,54 +26,58 @@ function cleanupMockFiles() {
   mockFiles.length = 0;
 }
 
-Deno.test("countSafeReportsWithDampener - example input", async () => {
+Deno.test("sumValidMultiplications - example input", async () => {
   const input =
-    `7 6 4 2 1\n1 2 7 8 9\n9 7 6 2 1\n1 3 2 4 5\n8 6 4 4 1\n1 3 6 7 9`;
+    `xmul(2,4)%&mul[3,7]!@^do_not_mul(5,5)+mul(32,64]then(mul(11,8)mul(8,5))`;
   const mockPath = mockFile(input);
   try {
-    const result = await countSafeReportsWithDampener(mockPath);
+    const result = await sumValidMultiplications(mockPath);
     assertEquals(
       result,
-      4,
-      "The count of safe reports should match the example.",
+      161,
+      "The sum of valid multiplications should match the example.",
     );
   } finally {
     cleanupMockFiles();
   }
 });
 
-Deno.test("countSafeReportsWithDampener - all safe", async () => {
-  const input = `1 2 3\n3 2 1\n5 4 3 2 1`;
+Deno.test("sumValidMultiplications - no valid instructions", async () => {
+  const input = `random text with no valid instructions`;
   const mockPath = mockFile(input);
   try {
-    const result = await countSafeReportsWithDampener(mockPath);
-    assertEquals(result, 3, "All reports should be safe without dampener.");
-  } finally {
-    cleanupMockFiles();
-  }
-});
-
-Deno.test("countSafeReportsWithDampener - mixed safe and unsafe", async () => {
-  const input = `1 3 6\n4 4\n5 4 3 2 1\n2 3 6 7`;
-  const mockPath = mockFile(input);
-  try {
-    const result = await countSafeReportsWithDampener(mockPath);
+    const result = await sumValidMultiplications(mockPath);
     assertEquals(
       result,
-      3,
-      "The count of safe reports should include fixable ones.",
+      0,
+      "The sum should be 0 when there are no valid instructions.",
     );
   } finally {
     cleanupMockFiles();
   }
 });
 
-Deno.test("countSafeReportsWithDampener - empty file", async () => {
+Deno.test("sumValidMultiplications - all valid instructions", async () => {
+  const input = `mul(1,2) mul(3,4) mul(5,6)`;
+  const mockPath = mockFile(input);
+  try {
+    const result = await sumValidMultiplications(mockPath);
+    assertEquals(
+      result,
+      44,
+      "The sum should be the total of all valid multiplications.",
+    );
+  } finally {
+    cleanupMockFiles();
+  }
+});
+
+Deno.test("sumValidMultiplications - empty input", async () => {
   const input = ``;
   const mockPath = mockFile(input);
   try {
-    const result = await countSafeReportsWithDampener(mockPath);
-    assertEquals(result, 0, "An empty file should have no safe reports.");
+    const result = await sumValidMultiplications(mockPath);
+    assertEquals(result, 0, "The sum should be 0 for empty input.");
   } finally {
     cleanupMockFiles();
   }

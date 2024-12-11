@@ -21,12 +21,13 @@ function cleanupMockFiles() {
       }
     } catch (err) {
       const error = err as Error; // Explicitly cast error to Error
-      console.warn(`Warning: Could not remove mock file: ${file} - ${error.message}`);
+      console.warn(
+        `Warning: Could not remove mock file: ${file} - ${error.message}`,
+      );
     }
   });
   mockFiles.length = 0; // Clear the mock files registry
 }
-
 
 Deno.test("calculateTotalDistance - example lists", async () => {
   const input = `3 4
@@ -38,7 +39,11 @@ Deno.test("calculateTotalDistance - example lists", async () => {
   const mockPath = mockFile(input);
   try {
     const result = await calculateTotalDistance(mockPath);
-    assertEquals(result, 11, "The calculated total distance should match the example.");
+    assertEquals(
+      result,
+      11,
+      "The calculated total distance should match the example.",
+    );
   } finally {
     cleanupMockFiles();
   }
@@ -51,7 +56,11 @@ Deno.test("calculateTotalDistance - identical lists", async () => {
   const mockPath = mockFile(input);
   try {
     const result = await calculateTotalDistance(mockPath);
-    assertEquals(result, 0, "The calculated total distance should be 0 for identical lists.");
+    assertEquals(
+      result,
+      0,
+      "The calculated total distance should be 0 for identical lists.",
+    );
   } finally {
     cleanupMockFiles();
   }
@@ -64,7 +73,11 @@ Deno.test("calculateTotalDistance - different values", async () => {
   const mockPath = mockFile(input);
   try {
     const result = await calculateTotalDistance(mockPath);
-    assertEquals(result, 54, "The calculated total distance should handle large differences correctly.");
+    assertEquals(
+      result,
+      54,
+      "The calculated total distance should handle large differences correctly.",
+    );
   } finally {
     cleanupMockFiles();
   }

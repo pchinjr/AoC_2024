@@ -13,19 +13,20 @@ function mockFile(content: string): string {
 
 // Cleanup function to delete all mock files
 function cleanupMockFiles() {
-    mockFiles.forEach((file) => {
-      try {
-        if (Deno.statSync(file).isFile) {
-          Deno.removeSync(file);
-        }
-      } catch (err) {
-        const error = err as Error; // Explicitly cast error to Error
-        console.warn(`Warning: Could not remove mock file: ${file} - ${error.message}`);
+  mockFiles.forEach((file) => {
+    try {
+      if (Deno.statSync(file).isFile) {
+        Deno.removeSync(file);
       }
-    });
-    mockFiles.length = 0; // Clear the mock files registry
-  }
-  
+    } catch (err) {
+      const error = err as Error; // Explicitly cast error to Error
+      console.warn(
+        `Warning: Could not remove mock file: ${file} - ${error.message}`,
+      );
+    }
+  });
+  mockFiles.length = 0; // Clear the mock files registry
+}
 
 Deno.test("calculateSimilarityScore - example lists", async () => {
   const input = `3 4\n4 3\n2 5\n1 3\n3 9\n3 3`;
@@ -43,7 +44,11 @@ Deno.test("calculateSimilarityScore - no matches", async () => {
   const mockPath = mockFile(input);
   try {
     const result = await calculateSimilarityScore(mockPath);
-    assertEquals(result, 0, "The similarity score should be 0 if there are no matches.");
+    assertEquals(
+      result,
+      0,
+      "The similarity score should be 0 if there are no matches.",
+    );
   } finally {
     cleanupMockFiles();
   }
@@ -54,7 +59,11 @@ Deno.test("calculateSimilarityScore - all matches", async () => {
   const mockPath = mockFile(input);
   try {
     const result = await calculateSimilarityScore(mockPath);
-    assertEquals(result, 15, "The similarity score should account for all matches.");
+    assertEquals(
+      result,
+      15,
+      "The similarity score should account for all matches.",
+    );
   } finally {
     cleanupMockFiles();
   }
@@ -65,7 +74,11 @@ Deno.test("calculateSimilarityScore - empty lists", async () => {
   const mockPath = mockFile(input);
   try {
     const result = await calculateSimilarityScore(mockPath);
-    assertEquals(result, 0, "The similarity score should be 0 for empty lists.");
+    assertEquals(
+      result,
+      0,
+      "The similarity score should be 0 for empty lists.",
+    );
   } finally {
     cleanupMockFiles();
   }
