@@ -16,11 +16,13 @@ async function solveChallenge(filePath: string): Promise<number> {
 
   console.debug("Global Graph:", graph);
 
-  const updates = updatesSection.split("\n").map((line) => line.split(",").map(Number));
+  const updates = updatesSection.split("\n").map((line) =>
+    line.split(",").map(Number)
+  );
 
   let sumOfMiddlePages = 0;
 
-  // Function to validate an update
+  // Function to determine if an update is valid
   function isValidUpdate(update: number[]): boolean {
     const position = new Map<number, number>();
     update.forEach((page, index) => position.set(page, index));
@@ -34,7 +36,6 @@ async function solveChallenge(filePath: string): Promise<number> {
         }
       }
     }
-
     return true;
   }
 
@@ -47,7 +48,7 @@ async function solveChallenge(filePath: string): Promise<number> {
     // Build a local graph for the update
     for (const node of relevant) {
       localGraph[node] = new Set(
-        [...(graph[node] || [])].filter((neighbor) => relevant.has(neighbor))
+        [...(graph[node] || [])].filter((neighbor) => relevant.has(neighbor)),
       );
     }
 
@@ -57,7 +58,7 @@ async function solveChallenge(filePath: string): Promise<number> {
     for (const node of relevant) {
       localInDegree[node] = 0;
     }
-    for (const [node, neighbors] of Object.entries(localGraph)) {
+    for (const [_node, neighbors] of Object.entries(localGraph)) {
       for (const neighbor of neighbors) {
         localInDegree[neighbor]++;
       }
