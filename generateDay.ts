@@ -34,7 +34,9 @@ async function generateDay(day: string) {
 // Get the day number from the command-line arguments
 const args = Deno.args;
 if (args.length !== 1) {
-  console.error("Usage: deno run --allow-write --allow-read generateDay.ts <day>");
+  console.error(
+    "Usage: deno run --allow-write --allow-read generateDay.ts <day>",
+  );
   Deno.exit(1);
 }
 
